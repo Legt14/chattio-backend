@@ -4,7 +4,10 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "dev": "nodemon src/app.ts"
+    "dev": "nodemon src/app.ts",
+    "start": "node dist/app.js",
+    "build": "tsc --build"
+
   },
   "author": "Leandro (Legt)",
   "license": "ISC",

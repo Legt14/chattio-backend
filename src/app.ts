@@ -7,7 +7,7 @@ import {config} from 'dotenv'
 config()
 
 
-const port = 3000;
+const port = process.env.PORT;
 const app: Express = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -24,7 +24,6 @@ app.use(cors());
 let rooms = new Set();
 
 io.on("connection", (socket) => {
-  console.log(process.env.ORIGIN)
   socket.on("message", (data, roomName) => {
     if (socket.rooms.has(roomName)) {
       socket.to(roomName).emit("message", {
