@@ -5,8 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "dev": "nodemon src/app.js",
-    "start": "npm run build && node build/index.js",
-    "build": "build && tsc"
+    "start": "node index.js"
   },
   "author": "Leandro (Legt)",
   "license": "ISC",
