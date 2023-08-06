@@ -8,7 +8,7 @@ config()
 
 
 const port = process.env.PORT;
-const app: Express = express();
+const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
