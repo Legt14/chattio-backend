@@ -10,16 +10,12 @@ const port = process.env.PORT;
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  origins:[process.env.ORIGIN],
-  handlePreflightRequest: (req, res) => {
-    res.writeHead(200, {
-      "Access-Control-Allow-Origin": process.env.ORIGIN,
-      "Access-Control-Allow-Methods": "GET,POST",
-      "Access-Control-Allow-Headers": "connection",
-      "Access-Control-Allow-Credentials": true
-    });
-    res.end();
-  }
+  allowEIO3: true,
+  cors: {
+    origin: process.env.ORIGIN,
+    methods: ["GET", "POST"],
+    credentials: true
+  },
 });
 
 
@@ -59,5 +55,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(port, () => {
-  console.info(`Server runnig at :${port}`);
+  console.info(`Server runnig at http://localhost:${port}`);
 });
