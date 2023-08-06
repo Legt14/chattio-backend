@@ -1,11 +1,10 @@
-import express, { Express, Response, Request } from "express";
-import http from "http";
-import { Server } from "socket.io";
-import cors from "cors";
-import {config} from 'dotenv'
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
+const { config } = require("dotenv");
 
-config()
-
+config();
 
 const port = process.env.PORT;
 const app = express();
@@ -16,8 +15,6 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
-
-
 
 app.use(cors());
 
@@ -49,11 +46,11 @@ io.on("connection", (socket) => {
       console.log(`User:${socket.id} join in: ${roomName}`); // Aquí puedes enviar mensajes o realizar alguna acción adicional después de unirte a la room
     }
   });
-  
-  socket.on("leaveRoom", (roomName)=>{
-    console.log(`User: ${socket.id} leave this room: ${roomName}`)
-    socket.leave(roomName)
-  })
+
+  socket.on("leaveRoom", (roomName) => {
+    console.log(`User: ${socket.id} leave this room: ${roomName}`);
+    socket.leave(roomName);
+  });
 });
 
 server.listen(port, () => {
