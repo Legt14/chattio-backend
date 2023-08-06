@@ -2,7 +2,9 @@ import express, { Express, Response, Request } from "express";
 import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
-import config from 'dotenv'
+import {config} from 'dotenv'
+
+config()
 
 
 const port = 3000;
@@ -10,16 +12,19 @@ const app: Express = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.ORIGIN || "http://localhost:5173",
+    origin: process.env.ORIGIN,
     methods: ["GET", "POST"],
   },
 });
+
+
 
 app.use(cors());
 
 let rooms = new Set();
 
 io.on("connection", (socket) => {
+  console.log(process.env.ORIGIN)
   socket.on("message", (data, roomName) => {
     if (socket.rooms.has(roomName)) {
       socket.to(roomName).emit("message", {
