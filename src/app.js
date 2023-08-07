@@ -8,16 +8,17 @@ config();
 
 const port = process.env.PORT;
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  allowEIO3: true,
-  cors: {
-    origin: process.env.ORIGIN,
-    methods: ["GET", "POST"],
-    credentials: true
-  },
-});
-
+const server = http.createServer(
+  cors({
+    allowEIO3: true,
+    cors: {
+      origin: [process.env.ORIGIN, process.env.ORIGIN2, process.env.ORIGIN3],
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+  })
+);
+const io = new Server(server);
 
 let rooms = new Set();
 
@@ -55,5 +56,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(port, () => {
-  console.info(`Server runnig at http://localhost:${port}`);
+  console.info(`Server runnig at port: ${port}`);
 });
