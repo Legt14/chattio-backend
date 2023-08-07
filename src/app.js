@@ -8,17 +8,13 @@ config();
 
 const port = process.env.PORT;
 const app = express();
-const server = http.createServer(
-  cors({
-    allowEIO3: true,
-    cors: {
-      origin: [process.env.ORIGIN, process.env.ORIGIN2, process.env.ORIGIN3],
-      methods: ["GET", "POST"],
-      credentials: true,
-    },
-  })
-);
-const io = new Server(server);
+const server = http.createServer(app.use);
+const io = new Server(server, {
+  cors: {
+    origin: "*"
+  }
+});
+
 
 let rooms = new Set();
 
