@@ -1,6 +1,6 @@
 {
   "name": "chatt.io",
-  "version": "0.1.7",
+  "version": "0.0.7",
   "description": "",
   "main": "src/app.js",
   "scripts": {
