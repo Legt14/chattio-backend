@@ -1,10 +1,11 @@
 {
   "name": "chatt.io",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "dev": "nodemon src/app.ts"
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js"
   },
   "author": "Leandro (Legt)",
   "license": "ISC",
@@ -15,9 +16,6 @@
     "socket.io": "^4.7.1"
   },
   "devDependencies": {
-    "@types/express": "^4.17.17",
-    "@types/node": "^20.4.5",
-    "nodemon": "^3.0.1",
-    "typescript": "^5.1.6"
-  }
+    "nodemon": "^3.0.1"
+ }
 }
