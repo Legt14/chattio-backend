@@ -18,6 +18,7 @@ const io = new Server(server, {
 });
 
 let rooms = new Set();
+let userCounter = new Map();
 
 // function clearEvery24h(setToClear) {
 //   setToClear.clear();
@@ -36,24 +37,45 @@ io.on("connection", (socket) => {
   socket.on("create", (roomName) => {
     rooms.add(roomName);
     socket.join(roomName);
-    io.emit("roomList", Array.from(rooms)); //Estamos emitiendo el event "roomCreated" para poder listar las rooms creada el front
-    console.log(roomName);
+    io.emit("roomList", [...rooms]); //Estamos emitiendo el event "roomCreated" para poder listar las rooms creada el front
   });
 
   socket.on("getRooms", () => {
-    socket.emit("roomList", Array.from(rooms)); // Enviar la lista de rooms al cliente que lo solicitó
+    socket.emit("roomList", [...rooms]); // Enviar la lista de rooms al cliente que lo solicitó
   });
+
+  const userCount = (roomName) => {
+    if (!userCounter.has(roomName)) {
+      userCounter.set(roomName, 1);
+    } else {
+      userCounter.set(roomName, userCounter.get(roomName) + 1);
+    }
+    io.emit("userCount", {
+      room: roomName,
+      count: userCounter.get(roomName),
+    });
+    console.log(userCounter);
+  };
 
   socket.on("joinRoom", (roomName) => {
     if (rooms.has(roomName)) {
       socket.join(roomName); // Unirse a la room especificada
+      userCount(roomName);
       console.log(`User:${socket.id} join in: ${roomName}`); // Aquí puedes enviar mensajes o realizar alguna acción adicional después de unirte a la room
     }
   });
 
-  socket.on("leaveRoom", (roomName) => {
-    console.log(`User: ${socket.id} leave this room: ${roomName}`);
+  socket.on("leave", (roomName) => {
     socket.leave(roomName);
+    if (userCounter.has(roomName)) {
+      userCounter.set(roomName, userCounter.get(roomName) - 1);
+      // Emitir el evento userCount a todos los sockets en la sala
+      io.emit("userCount", {
+        room: roomName,
+        count: userCounter.get(roomName),
+      });
+    }
+    console.log(userCounter);
   });
 });
 
