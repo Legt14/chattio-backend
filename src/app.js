@@ -43,6 +43,12 @@ io.on("connection", (socket) => {
   socket.on("getRooms", () => {
     socket.emit("roomList", [...rooms]); // Enviar la lista de rooms al cliente que lo solicitó
   });
+  userCounter.forEach((count, roomName) => {
+    socket.emit("userCount", {
+      room: roomName,
+      count: count,
+    });
+  });
 
   const userCount = (roomName) => {
     if (!userCounter.has(roomName)) {
@@ -80,7 +86,7 @@ io.on("connection", (socket) => {
 });
 
 server.listen(port, () => {
-  console.info(`Server runnig at port: ${port}`);
+  console.info(`Server runing at port: ${port}`);
 });
 
 // // Set the timer to execute the function every 24 hours
